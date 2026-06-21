@@ -1,3 +1,4 @@
+<!-- ...existing code... -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -25,6 +26,7 @@ body {
         radial-gradient(circle at top left, #ff0080, transparent 35%),
         radial-gradient(circle at bottom right, #00d4ff, transparent 35%),
         linear-gradient(135deg, #0f172a, #1e293b, #312e81);
+    position: relative;
 }
 
 .container {
@@ -33,6 +35,7 @@ body {
     text-align: center;
     padding: 1rem;
     z-index: 10;
+    position: relative;
 }
 
 h1 {
@@ -48,26 +51,27 @@ h1 {
 }
 
 #countdown {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 1.5rem;
     max-width: 750px;
     margin: 0 auto;
+    flex-wrap: wrap;
 }
 
-.card {
+.time-block {
     padding: 25px;
     border-radius: 24px;
     background: rgba(255,255,255,0.12);
     backdrop-filter: blur(15px);
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.12);
     box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-    animation: float 4s ease-in-out infinite;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 110px;
 }
-
-.card:nth-child(2) { animation-delay: .4s; }
-.card:nth-child(3) { animation-delay: .8s; }
-.card:nth-child(4) { animation-delay: 1.2s; }
 
 .value {
     font-size: 3rem;
@@ -81,10 +85,18 @@ h1 {
     text-transform: uppercase;
 }
 
+.separator {
+    font-size: 2.2rem;
+    opacity: 0.9;
+    line-height: 1;
+    padding: 0 6px;
+}
+
 #birthdayMessage {
     display: none;
     font-size: clamp(2rem, 6vw, 5rem);
     animation: pulse 1s infinite;
+    margin-top: 2rem;
 }
 
 .balloon {
@@ -95,6 +107,7 @@ h1 {
     border-radius: 50%;
     opacity: .7;
     animation: rise linear infinite;
+    z-index: 1;
 }
 
 .balloon::after {
@@ -105,6 +118,7 @@ h1 {
     width: 2px;
     height: 70px;
     background: rgba(255,255,255,.5);
+    transform: translateX(-50%);
 }
 
 .balloon1 {
@@ -158,13 +172,13 @@ h1 {
     }
 
     #countdown {
-        grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
         max-width: 420px;
     }
 
-    .card {
+    .time-block {
         padding: 20px;
+        min-width: 140px;
     }
 
     .value {
@@ -193,9 +207,10 @@ h1 {
         gap: 0.8rem;
     }
 
-    .card {
+    .time-block {
         padding: 16px;
         border-radius: 18px;
+        min-width: 70px;
     }
 
     .value {
@@ -227,46 +242,53 @@ h1 {
 <div class="balloon balloon3"></div>
 <div class="balloon balloon4"></div>
 
-<div class="container">
-
-```
+<div class ="container">
 <h1>🎂 Rijo's Birthday Countdown</h1>
-<div class="subtitle">Counting down to July 7</div>
+<div class="subtitle">July 7</div>
 
 <div id="countdown">
 
-    <div class="card">
-        <div id="days" class="value">0</div>
-        <div class="label">Days</div>
-    </div>
+<div class="time-block">
+    <div id="days" class="value">00</div>
+    <div class="label">Days</div>
+</div>
 
-    <div class="card">
-        <div id="hours" class="value">0</div>
-        <div class="label">Hours</div>
-    </div>
+<div class="separator">:</div>
 
-    <div class="card">
-        <div id="minutes" class="value">0</div>
-        <div class="label">Minutes</div>
-    </div>
+<div class="time-block">
+    <div id="hours" class="value">00</div>
+    <div class="label">Hours</div>
+</div>
 
-    <div class="card">
-        <div id="seconds" class="value">0</div>
-        <div class="label">Seconds</div>
-    </div>
+<div class="separator">:</div>
+
+<div class="time-block">
+    <div id="minutes" class="value">00</div>
+    <div class="label">Minutes</div>
+</div>
+
+<div class="separator">:</div>
+
+<div class="time-block">
+    <div id="seconds" class="value">00</div>
+    <div class="label">Seconds</div>
+</div>
 
 </div>
 
 <div id="birthdayMessage">
     🎉 Happy Birthday Rijo! 🎂
 </div>
-```
 
 </div>
 
 <script>
-const birthdayMonth = 6; // July
+const birthdayMonth = 6; // July (0-based)
 const birthdayDay = 7;
+
+function pad(n) {
+    return String(n).padStart(2, "0");
+}
 
 function updateCountdown() {
     const now = new Date();
@@ -289,14 +311,17 @@ function updateCountdown() {
     const minutes = Math.floor((diff / (1000 * 60)) % 60);
     const seconds = Math.floor((diff / 1000) % 60);
 
-    document.getElementById("days").textContent = days;
-    document.getElementById("hours").textContent = hours;
-    document.getElementById("minutes").textContent = minutes;
-    document.getElementById("seconds").textContent = seconds;
+    document.getElementById("days").textContent = pad(days);
+    document.getElementById("hours").textContent = pad(hours);
+    document.getElementById("minutes").textContent = pad(minutes);
+    document.getElementById("seconds").textContent = pad(seconds);
 
     if (diff <= 0) {
         document.getElementById("countdown").style.display = "none";
         document.getElementById("birthdayMessage").style.display = "block";
+    } else {
+        document.getElementById("countdown").style.display = "flex";
+        document.getElementById("birthdayMessage").style.display = "none";
     }
 }
 
@@ -306,3 +331,4 @@ setInterval(updateCountdown, 1000);
 
 </body>
 </html>
+<!-- ...existing code... -->
