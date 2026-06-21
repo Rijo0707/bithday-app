@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Countdown</title>
+
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        font-family: Arial, sans-serif;
+        color: white;
+        text-align: center;
+    }
+
+    .container {
+        padding: 2rem;
+    }
+
+    h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    #countdown {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .box {
+        background: rgba(255,255,255,0.15);
+        padding: 20px;
+        border-radius: 12px;
+        min-width: 100px;
+        backdrop-filter: blur(10px);
+    }
+
+    .value {
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+
+    .label {
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+
+    #message {
+        font-size: 2rem;
+        margin-top: 20px;
+        display: none;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🎂 Birthday Countdown</h1>
+
+    <div id="countdown">
+        <div class="box">
+            <div class="value" id="days">0</div>
+            <div class="label">Days</div>
+        </div>
+        <div class="box">
+            <div class="value" id="hours">0</div>
+            <div class="label">Hours</div>
+        </div>
+        <div class="box">
+            <div class="value" id="minutes">0</div>
+            <div class="label">Minutes</div>
+        </div>
+        <div class="box">
+            <div class="value" id="seconds">0</div>
+            <div class="label">Seconds</div>
+        </div>
+    </div>
+
+    <div id="message">🎉 Happy Birthday! 🎉</div>
+</div>
+
+<script>
+// Set birthday (Month is 0-based: Jan=0)
+const birthdayMonth = 6; // December
+const birthdayDay = 7;   // 25th
+
+function updateCountdown() {
+    const now = new Date();
+
+    let nextBirthday = new Date(
+        now.getFullYear(),
+        birthdayMonth,
+        birthdayDay,
+        0, 0, 0
+    );
+
+    if (now > nextBirthday) {
+        nextBirthday = new Date(
+            now.getFullYear() + 1,
+            birthdayMonth,
+            birthdayDay,
+            0, 0, 0
+        );
+    }
+
+    const diff = nextBirthday - now;
+
+    if (diff <= 0) {
+        document.getElementById("countdown").style.display = "none";
+        document.getElementById("message").style.display = "block";
+        return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    document.getElementById("days").textContent = days;
+    document.getElementById("hours").textContent = hours;
+    document.getElementById("minutes").textContent = minutes;
+    document.getElementById("seconds").textContent = seconds;
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
+
+</body>
+</html>
