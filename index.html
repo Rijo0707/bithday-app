@@ -1,97 +1,213 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Birthday Countdown</title>
+<title>Rijo's Birthday Countdown</title>
 
 <style>
-    body {
-        margin: 0;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: linear-gradient(135deg, #1e3c72, #2a5298);
-        font-family: Arial, sans-serif;
-        color: white;
-        text-align: center;
-    }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    .container {
-        padding: 2rem;
-    }
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Segoe UI", sans-serif;
+    color: white;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at top left, #ff0080, transparent 35%),
+        radial-gradient(circle at bottom right, #00d4ff, transparent 35%),
+        linear-gradient(135deg, #0f172a, #1e293b, #312e81);
+}
 
-    h1 {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-    }
+.container {
+    text-align: center;
+    z-index: 10;
+    padding: 2rem;
+}
 
-    #countdown {
-        display: flex;
-        gap: 20px;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
+h1 {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    margin-bottom: 2rem;
+    text-shadow: 0 0 20px rgba(255,255,255,0.7);
+    animation: glow 2s ease-in-out infinite alternate;
+}
 
-    .box {
-        background: rgba(255,255,255,0.15);
-        padding: 20px;
-        border-radius: 12px;
-        min-width: 100px;
-        backdrop-filter: blur(10px);
-    }
+.subtitle {
+    margin-bottom: 2rem;
+    opacity: 0.9;
+    font-size: 1.2rem;
+}
 
-    .value {
-        font-size: 2.5rem;
-        font-weight: bold;
-    }
+#countdown {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
 
-    .label {
-        font-size: 0.9rem;
-        opacity: 0.8;
-    }
+.card {
+    width: 140px;
+    padding: 25px;
+    border-radius: 24px;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    animation: float 4s ease-in-out infinite;
+}
 
-    #message {
-        font-size: 2rem;
-        margin-top: 20px;
-        display: none;
+.card:nth-child(2) { animation-delay: .4s; }
+.card:nth-child(3) { animation-delay: .8s; }
+.card:nth-child(4) { animation-delay: 1.2s; }
+
+.value {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.label {
+    margin-top: 8px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+}
+
+#birthdayMessage {
+    display: none;
+    font-size: clamp(2rem, 6vw, 5rem);
+    animation: pulse 1s infinite;
+}
+
+.balloon {
+    position: absolute;
+    bottom: -150px;
+    width: 60px;
+    height: 80px;
+    border-radius: 50%;
+    opacity: .7;
+    animation: rise linear infinite;
+}
+
+.balloon::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 80px;
+    width: 2px;
+    height: 70px;
+    background: rgba(255,255,255,.5);
+}
+
+.balloon1 {
+    background: #ff4d6d;
+    left: 10%;
+    animation-duration: 14s;
+}
+
+.balloon2 {
+    background: #4cc9f0;
+    left: 35%;
+    animation-duration: 18s;
+}
+
+.balloon3 {
+    background: #f72585;
+    left: 65%;
+    animation-duration: 16s;
+}
+
+.balloon4 {
+    background: #ffd60a;
+    left: 85%;
+    animation-duration: 20s;
+}
+
+@keyframes rise {
+    from {
+        transform: translateY(0);
     }
+    to {
+        transform: translateY(-130vh);
+    }
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 15px #ff4d6d;
+    }
+    to {
+        text-shadow: 0 0 35px #4cc9f0;
+    }
+}
+
+@keyframes float {
+    0%,100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+}
+
+@keyframes pulse {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+}
 </style>
+
 </head>
 <body>
 
-<div class="container">
-    <h1>🎂 Birthday Countdown</h1>
+<div class="balloon balloon1"></div>
+<div class="balloon balloon2"></div>
+<div class="balloon balloon3"></div>
+<div class="balloon balloon4"></div>
 
-    <div id="countdown">
-        <div class="box">
-            <div class="value" id="days">0</div>
-            <div class="label">Days</div>
-        </div>
-        <div class="box">
-            <div class="value" id="hours">0</div>
-            <div class="label">Hours</div>
-        </div>
-        <div class="box">
-            <div class="value" id="minutes">0</div>
-            <div class="label">Minutes</div>
-        </div>
-        <div class="box">
-            <div class="value" id="seconds">0</div>
-            <div class="label">Seconds</div>
-        </div>
+<div class="container">
+
+```
+<h1>🎂 Rijo's Birthday Countdown</h1>
+<div class="subtitle">Counting down to July 7</div>
+
+<div id="countdown">
+    <div class="card">
+        <div id="days" class="value">0</div>
+        <div class="label">Days</div>
     </div>
 
-    <div id="message">🎉 Happy Birthday! 🎉</div>
+    <div class="card">
+        <div id="hours" class="value">0</div>
+        <div class="label">Hours</div>
+    </div>
+
+    <div class="card">
+        <div id="minutes" class="value">0</div>
+        <div class="label">Minutes</div>
+    </div>
+
+    <div class="card">
+        <div id="seconds" class="value">0</div>
+        <div class="label">Seconds</div>
+    </div>
+</div>
+
+<div id="birthdayMessage">
+    🎉 Happy Birthday Rijo! 🎂
+</div>
+```
+
 </div>
 
 <script>
-// Set birthday (Month is 0-based: Jan=0)
-const birthdayMonth = 6; // December
-const birthdayDay = 7;   // 25th
+const birthdayMonth = 6; // July
+const birthdayDay = 7;
 
 function updateCountdown() {
+
     const now = new Date();
 
     let nextBirthday = new Date(
@@ -101,20 +217,15 @@ function updateCountdown() {
         0, 0, 0
     );
 
-    if (now > nextBirthday) {
-        nextBirthday = new Date(
-            now.getFullYear() + 1,
-            birthdayMonth,
-            birthdayDay,
-            0, 0, 0
-        );
+    if (now >= nextBirthday) {
+        nextBirthday.setFullYear(now.getFullYear() + 1);
     }
 
     const diff = nextBirthday - now;
 
     if (diff <= 0) {
         document.getElementById("countdown").style.display = "none";
-        document.getElementById("message").style.display = "block";
+        document.getElementById("birthdayMessage").style.display = "block";
         return;
     }
 
